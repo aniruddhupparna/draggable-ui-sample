@@ -1,24 +1,61 @@
 .container {
-  padding: 0 2rem;
+  background-color: #1f2227;
+  min-height: 100vh;
 }
 
-.main {
-  min-height: 100vh;
-  padding: 4rem 0;
+.canvasContainer {
+  padding:   0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
-
-.map {
-  position:relative;
-}
 
 .mapSelector {
   position: absolute;
-  top: 160px;
-  left: 133px;
+  height: 32px;
+  width: 32px;
+  margin: auto;
+  top: 40%;
+}
+
+.disableTransform {
+  transform: none !important;
+}
+
+.outputPlot {
+  position: absolute;
+  margin-left: calc(50vw - 150px);
+}
+
+.triangleContainer {
+  width: 300px;
+  height: 300px;
+  /* position: relative; */
+}
+
+.scatterPlotContainer {
+  margin-top: 100px;
+}
+
+.main {
+  padding-top: 100px;
+}
+
+.saveBtn {
+  text-align: center;
+   padding: 10px 20px;
+   cursor: pointer;
+}
+
+.answerListConatiner {
+
+}
+
+.triangleLables {
+  position: absolute;
+  color: white;
 }

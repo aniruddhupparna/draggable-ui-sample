@@ -14,3 +14,8 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.recharts-wrapper {
+  position: absolute !important;
+  left: calc(50vw - 150px);
+}
