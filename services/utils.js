@@ -24,5 +24,5 @@ export function getAnswers() {
         headers: {
             'Content-Type': 'application/json'
           }}
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}users`, options).then(res => res.json());
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}answers`, options).then(res => res.json());
 }

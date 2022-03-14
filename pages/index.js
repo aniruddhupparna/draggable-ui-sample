@@ -28,15 +28,16 @@ export default function Home() {
   }, [])
 
   function handleStop (evt) {
-    coordinates = {x: evt.clientX - canvasRef.current.offsetLeft, y: (evt.clientY - canvasRef.current.offsetTop - paddingTopOffset)}
+    coordinates = {x: evt.pageX - canvasRef.current.offsetLeft, y: (evt.pageY - canvasRef.current.offsetTop - paddingTopOffset)}
     const inside = ptInTriangle(coordinates, triangle.a, triangle.b, triangle.c)
    
     if (!inside) {
       pointRef.current.style.left = `${canvasRef.current.offsetLeft + 130}px`
       pointRef.current.style.top = `${canvasRef.current.offsetTop + 150}px`
+      coordinates = {x: pointRef.current.style.left, y: pointRef.current.style.top}
     } else {
-      pointRef.current.style.left = `${evt.clientX}px`
-      pointRef.current.style.top = `${evt.clientY - paddingTopOffset}px`
+      pointRef.current.style.left = `${evt.pageX}px`
+      pointRef.current.style.top = `${evt.pageY - paddingTopOffset}px`
     }
   };
 
@@ -72,7 +73,7 @@ function render() {
   }
 }
 
-function savePos() {
+function savePos(e) {
   postAnswers(coordinates).then(data => {
     getAnswers().then(res => setAnswersData(res))
   })
@@ -106,21 +107,25 @@ function savePos() {
             <polygon points="0 300, 300 300, 150 0" style={{fill:"whitesmoke"}}>
             </polygon>
           </svg>
-        <ScatterChart width={300} height={300}
-          margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
-          <XAxis dataKey="x" name="x"  axisLine={false} tick={false} />
-          <YAxis dataKey="y" name="y"  axisLine={false} tick={false} />
-          <Scatter name="selections" data={answersData} fill="#8884d8" line={false}/>
+        <ScatterChart width={380} height={340}>
+          <XAxis dataKey="x" name="x"  type="number" domain={[0, 300]} axisLine={false} tick={false}/>
+          <YAxis dataKey="y" name="y" reversed={true} type="number" domain={[0, 300]} axisLine={false} tick={false}/>
+          {answersData.length > 0 && 
+          <>
+          <Scatter name="selections" data={answersData.slice(0, -1)} fill="lightblue"/>
+          <Scatter name="last_selection" data={[answersData.slice(-1)[0]]} fill="royalblue"/>
+          </>}
         </ScatterChart>
         </div>
         <div className={styles.answerListConatiner}>
-          {answersData.length > 0 && (<div>List of DB entries</div>
+          {answersData.length > 0 && (<div style={{marginBottom: '20px'}}>List of DB entries</div>
           )}
-          <ul>
-          {answersData.map(answer => {
-            <li>{`id: ${answer['_id']}`}</li>
-          })}
-          </ul>
+          <div>
+          {answersData.map(answer => 
+            <div key={answer['_id']}>{`id: ${answer['_id']}`}</div>
+          )
+          }
+          </div>
         </div>
       </main>
     </div>
