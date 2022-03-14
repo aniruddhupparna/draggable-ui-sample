@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Draggable from 'react-draggable';
 import styles from '../styles/Home.module.css'
 import Image from 'next/image'
 import {useState, useEffect, useRef} from "react"
@@ -18,7 +17,6 @@ const paddingTopOffset = 100;
 export default function Home() {
   const canvasRef = useRef(null)
   const [ctx, setCtx] = useState(null)
-  const [disableTransform, setDisableTransform] = useState(false)
   const [answersData, setAnswersData] = useState([]);
   const pointRef = useRef(null)
   const triangle = {a: { x: 0, y: 300 }, b: { x: 300, y: 300 }, c: { x: 150, y: 0 }}
@@ -29,14 +27,16 @@ export default function Home() {
     getAnswers().then(data => setAnswersData(data))
   }, [])
 
-  function handleDrag (evt, ui) {
-    coordinates = {x: evt.x - canvasRef.current.offsetLeft, y: (evt.y - canvasRef.current.offsetTop - paddingTopOffset)}
+  function handleStop (evt) {
+    coordinates = {x: evt.clientX - canvasRef.current.offsetLeft, y: (evt.clientY - canvasRef.current.offsetTop - paddingTopOffset)}
     const inside = ptInTriangle(coordinates, triangle.a, triangle.b, triangle.c)
-    setDisableTransform(false)
+   
     if (!inside) {
-      setDisableTransform(true)
       pointRef.current.style.left = `${canvasRef.current.offsetLeft + 130}px`
       pointRef.current.style.top = `${canvasRef.current.offsetTop + 150}px`
+    } else {
+      pointRef.current.style.left = `${evt.clientX}px`
+      pointRef.current.style.top = `${evt.clientY - paddingTopOffset}px`
     }
   };
 
@@ -88,24 +88,19 @@ function savePos() {
       <main className={styles.main}>
         <div className={styles.canvasContainer}>
           <span className={styles.triangleLables} style={{top: "-30px"}}>Eating</span>
-          <span className={styles.triangleLables} style={{top: "280px", left: "calc(50vw - 215px)"}}>Sleeping</span>
+          <span className={styles.triangleLables} style={{top: "280px", left: "calc(50vw - 230px)"}}>Sleeping</span>
           <span className={styles.triangleLables} style={{top: "280px", left: "calc(50vw + 150px)"}}>Working</span>
         <canvas width="300" height="300" ref={canvasRef}
            ></canvas>
            {render()}
-          <Draggable
-                handle=".handle"
-                onDrag={handleDrag}
-                >
-                  <div className={`handle ${styles.mapSelector} ${disableTransform ? styles.disableTransform: ""}`} ref={pointRef}>
-                    <Image src="/images/pointer.png" alt="Draggable pointer" width={32} height={32} /> 
-                  </div>
-          </Draggable>
+            <div className={styles.mapSelector} ref={pointRef} onDragEnd={handleStop}>
+              <Image src="/images/pointer.png" alt="Draggable pointer" width={32} height={32} /> 
+            </div>
         <div style={{textAlign: 'center', padding: '20px'}}>
            <button className={styles.saveBtn} onClick={savePos}>Save</button>
         </div>
         </div>
-        
+        <div className={styles.outputHeading}>OUTPUT HEAT MAP</div>
         <div className={styles.scatterPlotContainer}>
         <svg height="300" width="300" className={styles.outputPlot}>
             <polygon points="0 300, 300 300, 150 0" style={{fill:"whitesmoke"}}>

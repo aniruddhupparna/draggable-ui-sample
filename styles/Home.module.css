@@ -22,10 +22,6 @@
   top: 40%;
 }
 
-.disableTransform {
-  transform: none !important;
-}
-
 .outputPlot {
   position: absolute;
   margin-left: calc(50vw - 150px);
@@ -38,7 +34,7 @@
 }
 
 .scatterPlotContainer {
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 .main {
@@ -58,4 +54,10 @@
 .triangleLables {
   position: absolute;
   color: white;
+}
+
+.outputHeading {
+  text-align: center;
+  color:  white;
+  padding-top: 70px;
 }
