@@ -20,11 +20,11 @@
   width: 32px;
   margin: auto;
   top: 40%;
+  background-color: transparent;
 }
 
 .outputPlot {
   position: absolute;
-  margin-left: calc(50vw - 150px);
 }
 
 .triangleContainer {
@@ -35,7 +35,9 @@
 
 .scatterPlotContainer {
   margin-top: 70px;
-  min-height: 50vh
+  min-height: 50vh;
+  display: flex;
+  justify-content: center;
 }
 
 .main {
