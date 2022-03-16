@@ -4,13 +4,7 @@ import Image from 'next/image'
 import {useState, useEffect, useRef} from "react"
 import { ScatterChart, XAxis, YAxis, Scatter, Cell } from 'recharts';
 import { getAnswers, postAnswers } from '../services/utils';
-
-// const data01 = [
-//   {
-//     "x": 100,
-//     "y": 200
-//   }
-// ]
+import Script from 'next/script';
 
 const paddingTopOffset = 100;
 
@@ -114,12 +108,12 @@ function savePos(e) {
       <main className={styles.main}>
         <div className={styles.canvasContainer}>
           <span className={styles.triangleLables} style={{top: "-30px"}}>Eating</span>
-          <span className={styles.triangleLables} style={{top: "280px", left: "calc(50vw - 230px)"}}>Sleeping</span>
-          <span className={styles.triangleLables} style={{top: "280px", left: "calc(50vw + 150px)"}}>Working</span>
+          <span className={styles.triangleLables} >Sleeping</span>
+          <span className={styles.triangleLables} >Working</span>
         <canvas width="300" height="300" ref={canvasRef}
            ></canvas>
            {render()}
-            <div className={styles.mapSelector} ref={pointRef} onDragStart={startDrag} onDragEnd={handleStop} onTouchEnd={handleStop}>
+            <div className={styles.mapSelector} ref={pointRef} onDragStart={startDrag} onDragEnd={handleStop} draggable={true}>
               <Image src="/images/pointer.png" alt="Draggable pointer" width={32} height={32} /> 
             </div>
         <div style={{textAlign: 'center', padding: '20px'}}>
@@ -157,6 +151,7 @@ function savePos(e) {
           </div>
         </div>
       </main>
+      <Script src="/DragDropTouch.js" />
     </div>
   )
 }

@@ -19,3 +19,9 @@ a {
   position: absolute !important;
   left: calc(50vw - 225px);
 }
+
+@media (max-width: 480px) { 
+  .recharts-wrapper {
+    left: calc(50vw - 215px);
+  }
+}
