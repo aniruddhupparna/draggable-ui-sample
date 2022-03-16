@@ -119,7 +119,7 @@ function savePos(e) {
         <canvas width="300" height="300" ref={canvasRef}
            ></canvas>
            {render()}
-            <div className={styles.mapSelector} ref={pointRef} onDragStart={startDrag} onDragEnd={handleStop}>
+            <div className={styles.mapSelector} ref={pointRef} onDragStart={startDrag} onDragEnd={handleStop} onTouchEnd={handleStop}>
               <Image src="/images/pointer.png" alt="Draggable pointer" width={32} height={32} /> 
             </div>
         <div style={{textAlign: 'center', padding: '20px'}}>
