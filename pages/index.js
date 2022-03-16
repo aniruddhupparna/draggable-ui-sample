@@ -40,6 +40,10 @@ export default function Home() {
    }
 
   function handleStop (evt) {
+    setTimeout(function() {
+      evt.target.style.visibility = "";
+    }, 1);
+
     coordinates = {x: evt.pageX - canvasRef.current.offsetLeft, y: (evt.pageY - canvasRef.current.offsetTop - paddingTopOffset)}
     const inside = ptInTriangle(coordinates, triangle.a, triangle.b, triangle.c)
    
@@ -88,6 +92,12 @@ function render() {
   }
 }
 
+function startDrag(e) {
+  setTimeout(function() {
+    e.target.style.visibility = "hidden";
+  }, 1);
+}
+
 function savePos(e) {
   postAnswers(coordinates).then(data => {
     getAnswers().then(res => addAvgDistance(res))
@@ -109,7 +119,7 @@ function savePos(e) {
         <canvas width="300" height="300" ref={canvasRef}
            ></canvas>
            {render()}
-            <div className={styles.mapSelector} ref={pointRef} onDragEnd={handleStop}>
+            <div className={styles.mapSelector} ref={pointRef} onDragStart={startDrag} onDragEnd={handleStop}>
               <Image src="/images/pointer.png" alt="Draggable pointer" width={32} height={32} /> 
             </div>
         <div style={{textAlign: 'center', padding: '20px'}}>
