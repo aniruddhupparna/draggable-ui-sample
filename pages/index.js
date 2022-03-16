@@ -129,7 +129,7 @@ function savePos(e) {
           <>
           <Scatter name="selections" data={answersData.slice(0, -1)}>
               {answersData.slice(0, -1).map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={`rgba(0, 0, 255, ${(1 - entry.average_distance / maxAvgDistance)})`} />
+                  <Cell key={`cell-${index}`} fill={`rgba(0, 0, 255, ${(1 - 0.75 * entry.average_distance / maxAvgDistance)})`} />
             ))}
           </Scatter>
           <Scatter name="last_selection" data={[answersData.slice(-1)[0]]} fill="red"/>
