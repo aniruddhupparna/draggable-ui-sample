@@ -12,10 +12,10 @@ export default function Home() {
   const canvasRef = useRef(null)
   const [ctx, setCtx] = useState(null)
   const [answersData, setAnswersData] = useState([]);
-  const pointRef = useRef(null)
+  const pointRef = useRef(null) // used to create reference to the draggable point and set its positioning programmatically
   const [maxAvgDistance, setMaxAvgDistance] = useState(336); // we assume this value based on the max distance between 2 points in our len = 300  height = 300 triangle
   const triangle = {a: { x: 0, y: 300 }, b: { x: 300, y: 300 }, c: { x: 150, y: 0 }}
-  let coordinates = {x: 150, y: 150}
+  let coordinates = {x: 150, y: 150} // default coordinates for the draggable point
 
   useEffect(() => {
     setCtx(canvasRef.current.getContext("2d"));
@@ -23,16 +23,20 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+
+// function to add avg distance info to each point to determine its color in output heatmap
   function addAvgDistance(data) {
     data.forEach(x => x.average_distance = data.map(y => distance(x, y)).reduce((a,b) => a + b, 0) / data.length)
     setMaxAvgDistance(Math.max(...data.map(x => x.average_distance)))
     setAnswersData(data)
   }
 
+  // function to calculate distance between 2 points (used for calculating avg distance from a given point to all other points) 
   function distance(pointA, pointB) {
     return ((pointA.x-pointB.x)**2 + (pointB.y-pointB.y)**2)**0.5
    }
 
+  // function to set coordinates / recentre the draggable point if it is dropped outside
   function handleStop (evt) {
     setTimeout(function() {
       evt.target.style.visibility = "";
@@ -54,7 +58,7 @@ export default function Home() {
   };
 
   function ptInTriangle(p, p0, p1, p2) {
-    // check of point is inside triangle using barycentric coordinates
+    // check if point is inside triangle using barycentric coordinates
     var A = 1/2 * (-p1.y * p2.x + p0.y * (-p1.x + p2.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y);
     var sign = A < 0 ? -1 : 1;
     var s = (p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y) * sign;
@@ -86,12 +90,14 @@ function render() {
   }
 }
 
+// hide the initial location of the pointer as soon as it is dragged
 function startDrag(e) {
   setTimeout(function() {
     e.target.style.visibility = "hidden";
   }, 1);
 }
 
+// Save the current coordinates of the pointer to database
 function savePos(e) {
   postAnswers(coordinates).then(data => {
     getAnswers().then(res => addAvgDistance(res))
@@ -107,7 +113,7 @@ function savePos(e) {
 
       <main className={styles.main}>
         <div className={styles.canvasContainer}>
-          <span className={styles.triangleLables} style={{top: "-30px"}}>Eating</span>
+          <span className={styles.triangleLables}>On what have you spent most time today? <br/><br/>Eating</span>
           <span className={styles.triangleLables} >Sleeping</span>
           <span className={styles.triangleLables} >Working</span>
         <canvas width="300" height="300" ref={canvasRef}
@@ -151,6 +157,7 @@ function savePos(e) {
           </div>
         </div>
       </main>
+      {/* polyfill to support drag and drop in mobile browsers */}
       <Script src="/DragDropTouch.js" />
     </div>
   )

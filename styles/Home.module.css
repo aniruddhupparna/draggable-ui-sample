@@ -67,6 +67,11 @@
   padding-top: 70px;
 }
 
+.triangleLables:first-of-type{
+  top: -75px;
+  text-align: center;
+}
+
 .triangleLables:nth-of-type(2){
   top: 280px;
   left: calc(50vw - 230px)
