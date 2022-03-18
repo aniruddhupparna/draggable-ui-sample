@@ -101,6 +101,11 @@ function startDrag(e) {
 function savePos(e) {
   postAnswers(coordinates).then(data => {
     getAnswers().then(res => addAvgDistance(res))
+    // we recentre the point after successful save
+    // we subtract paddingTopOffset to account for the top padding we have given above canvas
+    // we subtract 16px to account for half the size of pointer itself
+    pointRef.current.style.left = `${canvasRef.current.offsetLeft + 130}px`
+    pointRef.current.style.top = `${canvasRef.current.offsetTop + 150}px`
   })
 }
 
